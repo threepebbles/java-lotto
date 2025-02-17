@@ -5,6 +5,7 @@ import domain.LottoNumber;
 import domain.LottoTicket;
 import domain.Payment;
 import java.util.Arrays;
+import java.util.List;
 import util.Console;
 import util.RetryHandler;
 
@@ -38,15 +39,15 @@ public class InputView {
     public static LottoTicket inputWinningLottoNumbers() {
         return RetryHandler.retryUntilSuccessWithReturn(() -> {
                     System.out.println("지난 주 당첨 번호를 입력해 주세요.");
-                    String winningLottoTicket = Console.readLine();
-                    return new LottoTicket(
-                            Arrays.stream(winningLottoTicket.split(",", -1))
-                                    .map(String::strip)
-                                    .mapToInt(Integer::parseInt)
-                                    .boxed()
-                                    .map(LottoNumber::new)
-                                    .toList()
-                    );
+                    String input = Console.readLine();
+                    List<String> parsedInput = Arrays.stream(input.split(",", -1))
+                            .map(String::strip)
+                            .toList();
+                    parsedInput.forEach(InputView::validateInteger);
+                    return LottoTicket.from(parsedInput.stream()
+                            .mapToInt(Integer::parseInt)
+                            .boxed()
+                            .toList());
                 }
         );
     }
