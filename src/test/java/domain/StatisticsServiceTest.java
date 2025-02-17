@@ -49,7 +49,7 @@ class StatisticsServiceTest {
     @MethodSource("calculateCountMatchedNumbersCases")
     void 당첨번호_매칭_개수_테스트(List<Integer> lottoNumbers, List<Integer> winningNumbers, int expected) {
         // given
-        LottoTicket lottoTicket = LottoTicket.createLottoTicket(lottoNumbers);
+        LottoTicket lottoTicket = LottoTicket.from(lottoNumbers);
         LottoTicket winningLottoTicket = new LottoTicket(winningNumbers.stream().map(LottoNumber::new).toList());
 
         // when
@@ -63,7 +63,7 @@ class StatisticsServiceTest {
     @MethodSource("bonusNumberNotMatchedCases")
     void 보너스_번호가_매칭되지_않는_경우(List<Integer> lottoNumbers, int bonusNumber, boolean expected) {
         // given
-        LottoTicket lottoTicket = LottoTicket.createLottoTicket(lottoNumbers);
+        LottoTicket lottoTicket = LottoTicket.from(lottoNumbers);
         LottoNumber bonusLottoNumber = new LottoNumber(bonusNumber);
 
         // when
@@ -77,7 +77,7 @@ class StatisticsServiceTest {
     @MethodSource("bonusNumberMatchedCases")
     void 보너스_번호가_매칭되는_경우(List<Integer> lottoNumbers, int bonusNumber, boolean expected) {
         // given
-        LottoTicket lottoTicket = LottoTicket.createLottoTicket(lottoNumbers);
+        LottoTicket lottoTicket = LottoTicket.from(lottoNumbers);
         LottoNumber bonusLottoNumber = new LottoNumber(bonusNumber);
 
         // when
@@ -90,10 +90,10 @@ class StatisticsServiceTest {
     @Test
     void 당첨_통계_계산() {
         //given
-        LottoTicket fifth = LottoTicket.createLottoTicket(List.of(1, 2, 3, 43, 44, 45));
-        LottoTicket fourth = LottoTicket.createLottoTicket(List.of(1, 2, 3, 4, 44, 45));
-        LottoTicket second = LottoTicket.createLottoTicket(List.of(1, 2, 3, 4, 5, 7));
-        LottoTicket nothing = LottoTicket.createLottoTicket(List.of(31, 32, 33, 34, 35, 36));
+        LottoTicket fifth = LottoTicket.from(List.of(1, 2, 3, 43, 44, 45));
+        LottoTicket fourth = LottoTicket.from(List.of(1, 2, 3, 4, 44, 45));
+        LottoTicket second = LottoTicket.from(List.of(1, 2, 3, 4, 5, 7));
+        LottoTicket nothing = LottoTicket.from(List.of(31, 32, 33, 34, 35, 36));
         LottoTickets lottoTickets = new LottoTickets(List.of(fifth, fourth, second, nothing));
         LottoTicket winningLottoTicket = new LottoTicket(Stream.of(1, 2, 3, 4, 5, 6).map(LottoNumber::new).toList());
         LottoNumber bonusNumber = new LottoNumber(7);
@@ -114,10 +114,10 @@ class StatisticsServiceTest {
     @Test
     void 수익률_계산() {
         //given
-        LottoTicket fifth = LottoTicket.createLottoTicket(List.of(1, 2, 3, 43, 44, 45));
-        LottoTicket fourth = LottoTicket.createLottoTicket(List.of(1, 2, 3, 4, 44, 45));
-        LottoTicket second = LottoTicket.createLottoTicket(List.of(1, 2, 3, 4, 5, 7));
-        LottoTicket nothing = LottoTicket.createLottoTicket(List.of(31, 32, 33, 34, 35, 36));
+        LottoTicket fifth = LottoTicket.from(List.of(1, 2, 3, 43, 44, 45));
+        LottoTicket fourth = LottoTicket.from(List.of(1, 2, 3, 4, 44, 45));
+        LottoTicket second = LottoTicket.from(List.of(1, 2, 3, 4, 5, 7));
+        LottoTicket nothing = LottoTicket.from(List.of(31, 32, 33, 34, 35, 36));
         LottoTickets lottoTickets = new LottoTickets(List.of(fifth, fourth, second, nothing));
         LottoTicket winningLottoTicket = new LottoTicket(Stream.of(1, 2, 3, 4, 5, 6).map(LottoNumber::new).toList());
         LottoNumber bonusNumber = new LottoNumber(7);

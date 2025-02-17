@@ -13,7 +13,7 @@ public class LottoTicket {
         this.lottoNumbers = lottoNumbers;
     }
 
-    public static LottoTicket createLottoTicket(List<Integer> numbers) {
+    public static LottoTicket from(List<Integer> numbers) {
         List<LottoNumber> lottoNumbers = numbers.stream().map(LottoNumber::new).toList();
         return new LottoTicket(lottoNumbers);
     }
