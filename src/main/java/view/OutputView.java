@@ -5,7 +5,6 @@ import domain.LottoPrize;
 import domain.LottoTicket;
 import domain.LottoTickets;
 import domain.WinningResult;
-import domain.WinningStatistics;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -25,12 +24,11 @@ public class OutputView {
     }
 
     public static void printWinningResult(WinningResult winningResult) {
-        printWinningStatistics(winningResult.winningStatistics());
+        printWinningStatistics(winningResult.prizeCounter());
         printProfit(winningResult.profit());
     }
 
-    private static void printWinningStatistics(WinningStatistics winningStatistics) {
-        Map<LottoPrize, Integer> prizeCounter = winningStatistics.prizeCounter();
+    private static void printWinningStatistics(Map<LottoPrize, Integer> prizeCounter) {
         List<LottoPrize> lottoPrizes = Arrays.stream(LottoPrize.values())
                 .filter(lottoPrize -> lottoPrize != LottoPrize.NOTHING)
                 .sorted(Comparator.comparing(LottoPrize::getMoney))

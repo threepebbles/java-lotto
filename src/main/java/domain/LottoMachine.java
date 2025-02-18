@@ -17,9 +17,7 @@ public class LottoMachine {
             int number = extractUniqueLottoNumber(numbers);
             numbers.add(number);
         }
-        return new LottoTicket(numbers.stream()
-                .map(LottoNumber::new)
-                .toList());
+        return LottoTicket.from(numbers);
     }
 
     private int extractUniqueLottoNumber(List<Integer> numbers) {

@@ -1,23 +1,21 @@
 package controller;
 
 import domain.DrawResult;
+import domain.LottoMachine;
+import domain.LottoPrize;
 import domain.LottoTickets;
 import domain.Payment;
-import domain.RandomIntegerGenerator;
 import domain.WinningResult;
-import domain.WinningStatistics;
-import service.IssuingService;
-import service.StatisticsService;
+import domain.WinningStatisticsCalculator;
+import java.util.Map;
 import view.InputView;
 import view.OutputView;
 
 public class MainController {
-    private final IssuingService issuingService;
-    private final StatisticsService statisticsService;
+    private final LottoMachine lottoMachine;
 
-    public MainController(IssuingService issuingService, StatisticsService statisticsService) {
-        this.issuingService = issuingService;
-        this.statisticsService = statisticsService;
+    public MainController(LottoMachine lottoMachine) {
+        this.lottoMachine = lottoMachine;
     }
 
     public void run() {
@@ -33,13 +31,14 @@ public class MainController {
 
     private LottoTickets purchaseLottoTickets() {
         Payment payment = InputView.inputPayment();
-        return issuingService.issueLottoTickets(payment, new RandomIntegerGenerator());
+        return lottoMachine.generateLottoTickets(payment);
     }
 
     private WinningResult calculateWinningResult(LottoTickets lottoTickets,
                                                  DrawResult drawResult) {
-        WinningStatistics winningStatistics = statisticsService.calculateWinningStatistics(lottoTickets, drawResult);
-        double profit = statisticsService.calculateProfit(winningStatistics);
-        return new WinningResult(winningStatistics, profit);
+        Map<LottoPrize, Integer> prizeCounter = WinningStatisticsCalculator.calculateWinningStatistics(
+                lottoTickets, drawResult);
+        double profit = WinningStatisticsCalculator.calculateProfit(prizeCounter);
+        return new WinningResult(prizeCounter, profit);
     }
 }

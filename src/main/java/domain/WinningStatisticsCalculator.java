@@ -1,16 +1,11 @@
-package service;
+package domain;
 
-import domain.DrawResult;
-import domain.LottoMachine;
-import domain.LottoPrize;
-import domain.LottoTickets;
-import domain.WinningStatistics;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StatisticsService {
-    public WinningStatistics calculateWinningStatistics(LottoTickets lottoTickets,
-                                                        DrawResult drawResult) {
+public class WinningStatisticsCalculator {
+    public static Map<LottoPrize, Integer> calculateWinningStatistics(LottoTickets lottoTickets,
+                                                                      DrawResult drawResult) {
         Map<LottoPrize, Integer> prizeCounter = new HashMap<>();
         initializePrizeCounter(prizeCounter);
 
@@ -22,19 +17,18 @@ public class StatisticsService {
                     int prizeCount = prizeCounter.get(prize);
                     prizeCounter.put(prize, prizeCount + 1);
                 });
-        return new WinningStatistics(prizeCounter);
+        return prizeCounter;
     }
 
-    private void initializePrizeCounter(Map<LottoPrize, Integer> prizeCounter) {
+    private static void initializePrizeCounter(Map<LottoPrize, Integer> prizeCounter) {
         for (LottoPrize prize : LottoPrize.values()) {
             prizeCounter.put(prize, 0);
         }
     }
 
-    public double calculateProfit(WinningStatistics winningStatistics) {
+    public static double calculateProfit(Map<LottoPrize, Integer> prizeCounter) {
         long sum = 0;
         long lottoTicketNumber = 0;
-        Map<LottoPrize, Integer> prizeCounter = winningStatistics.prizeCounter();
         for (LottoPrize lottoPrize : LottoPrize.values()) {
             sum += (long) prizeCounter.get(lottoPrize) * lottoPrize.getMoney();
             lottoTicketNumber += prizeCounter.get(lottoPrize);
